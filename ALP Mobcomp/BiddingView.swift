@@ -17,15 +17,37 @@ struct BiddingView: View {
     @State private var selectedAssetsPlayer4: Set<Int> = []
     @State private var isAssetSelectionVisible = false
     @State private var currentPlayer = 1
-    
-    
+    @State private var heightLayar = UIScreen.main.bounds.height
+    @State private var widthLayar = UIScreen.main.bounds.width
+    @State private var selectedImage: String? = nil
+    @State private var selectedImage2: String? = nil
+    @State private var selectedImage3: String? = nil
+    @State private var selectedImage4: String? = nil
+    @State private var showAlert = false
+    @State private var selectedImageName: String?
+    @State private var Bidding: Int = 0
+    @State private var Bidding2: Int = 0
+    @State private var Opening: Int = 0
+    @State private var Pass: Int = 0
+    @State private var DblUS: Int = 0
+    @State private var DblTB: Int = 0
+    @State private var RDblUS: Int = 0
+    @State private var RDblTB: Int = 0
+    @State private var DblUSOK: Int = 0
+    @State private var DblTBOK: Int = 0
+    @State private var RDblUSOK: Int = 0
+    @State private var RDblTBOK: Int = 0
+    @State private var Kontrak: String = ""
+    @State private var Kontrakfix: String = ""
+    @State private var isCalculatorViewActive = false
     @State private var x: CGFloat = 180
+    @State private var Angka: Int = 1
 
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
-                    Rectangle()
+                    Rectangle() //utara
                         .foregroundColor(.clear)
                         .frame(width: 150, height: 359)
                         .background(Color(red: 0.96, green: 0.96, blue: 0.96).opacity(0.5))
@@ -33,20 +55,22 @@ struct BiddingView: View {
                         .shadow(color: .black.opacity(0.25), radius: 3, x: 4, y: 4)
                         .rotationEffect(Angle(degrees: 90))
                         .overlay(
-                            HStack(spacing: 10) {
-                                ForEach(selectedAssetsPlayer1.sorted(), id: \.self) { asset in
-                                    Image("\(asset)")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 100, height: 100)
-                                        .rotationEffect(Angle(degrees: 270))
-                                        .position(x: -30, y:150)
+                                Group {
+                                    if let selectedImage = selectedImage {
+                                        Image(selectedImage)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 100, height: 100)
+                                            .position(x: 80, y: 300)
+                                            .rotationEffect(Angle(degrees: 270))
+                                    }
+                                    
                                 }
-                            }
+                            
                         )
 
                     HStack(spacing: 0) {
-                        Rectangle()
+                        Rectangle() //barat
                             .foregroundColor(.clear)
                             .frame(width:435, height: 123)  // Set the desired height here
                             .background(Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
@@ -55,17 +79,19 @@ struct BiddingView: View {
                             .rotationEffect(Angle(degrees: 90))
                             .frame(minWidth: 0, maxWidth: .infinity)  // Set the desired width range here
                             .overlay(
-                                HStack(spacing: 10) {
-                                    ForEach(selectedAssetsPlayer4.sorted(), id: \.self) { asset in
-                                        Image("\(asset)")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 100, height: 100)
-                                            .rotationEffect(Angle(degrees: 180))
-                                            .position(x: 60, y: 220)
+                                    Group {
+                                        if let selectedImage4 = selectedImage4 {
+                                            Image(selectedImage4)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 100)
+                                                .position(x: 75, y: 220)
+                                                .rotationEffect(Angle(degrees: 180))
+                                        }
                                     }
-                                }
+                                
                             )
+
                         VStack{
                             ZStack{
                                 Rectangle()
@@ -87,7 +113,7 @@ struct BiddingView: View {
                                     .frame(minHeight: 10, maxHeight: 0)
                                     .frame(maxWidth: 50)
                                 
-                                Text("SCORE")
+                                Text("Previous")
                                     .font(
                                         Font.custom("Poppins", size: 20)
                                             .weight(.bold)
@@ -96,6 +122,28 @@ struct BiddingView: View {
                                     .foregroundColor(.black)
                                 
                                     .rotationEffect(Angle(degrees: 90))
+                                    .onTapGesture {
+                                        if Angka == 1
+                                        {
+                                            Angka = 1
+                                            currentPlayer = Angka % 4
+                                            if currentPlayer == 0
+                                            {
+                                                currentPlayer = 4
+                                                selectedImage = ""
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Angka = Angka - 1
+                                            
+                                            currentPlayer = Angka % 4
+                                            if currentPlayer == 0
+                                            {
+                                                currentPlayer = 4
+                                            }
+                                        }
+                                    }
                             }
                             
                             Rectangle()
@@ -120,11 +168,23 @@ struct BiddingView: View {
                                 .rotationEffect(Angle(degrees: 90))
                                 .frame(minHeight: 10, maxHeight: 0)
                                 .frame(maxWidth: 50)
+                                .overlay (
+                                    Text(String(Angka))
+                                        .font(
+                                            Font.custom("Poppins", size: 20)
+                                                .weight(.bold)
+                                        )
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.black)
+                                        .rotationEffect(Angle(degrees: 90))
+                                        .position(x: 25, y: 5)
+                                )
                             
-                            
-                            Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: 0, height: 65)
+
+                                Rectangle()
+                                    .foregroundColor(.clear)
+                                    .frame(width: 0, height: 65)
+
                             
                             ZStack{
                                 Rectangle()
@@ -146,7 +206,8 @@ struct BiddingView: View {
                                     .frame(minHeight: 10, maxHeight: 0)
                                     .frame(maxWidth: 50)
                                 
-                                Text("INPUT")
+
+                                Text("Next")
                                     .font(
                                         Font.custom("Poppins", size: 20)
                                             .weight(.bold)
@@ -154,10 +215,19 @@ struct BiddingView: View {
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(.black)
                                     .rotationEffect(Angle(degrees: 90))
+                                    .onTapGesture
+                                    {
+                                        Angka = Angka + 1
+                                        currentPlayer = Angka % 4
+                                        if currentPlayer == 0
+                                        {
+                                            currentPlayer = 4
+                                        }
+                                    }
                             }
                         }
                         
-                        Rectangle()
+                        Rectangle() //timur
                             .foregroundColor(.clear)
                             .frame(width:435, height: 123)  // Set the desired height here
                             .background(Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
@@ -166,20 +236,22 @@ struct BiddingView: View {
                             .rotationEffect(Angle(degrees: 90))
                             .frame(minWidth: 0, maxWidth: .infinity)  // Set the desired width range here
                             .overlay(
-                                HStack(spacing: 10) {
-                                    ForEach(selectedAssetsPlayer3.sorted(), id: \.self) { asset in
-                                        Image("\(asset)")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 100, height: 100)
-                                            .rotationEffect(Angle(degrees: 90))
-                                            .position(x: 70, y:400)
+                                    Group {
+                                        if let selectedImage2 = selectedImage2 {
+                                            Image(selectedImage2)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 100)
+                                                .position(x: 80, y: 210)
+                                                .rotationEffect(Angle(degrees: 0))
+                                        }
                                     }
-                                }
+                                
                             )
+
                     }
                     
-                    Rectangle()
+                    Rectangle() //selatan
                         .foregroundColor(.clear)
                         .frame(width: 150, height: 359)
                         .background(Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
@@ -187,17 +259,19 @@ struct BiddingView: View {
                         .shadow(color: .black.opacity(0.25), radius: 3, x: 4, y: 4)
                         .rotationEffect(Angle(degrees: 90))
                         .overlay(
-                            HStack(spacing: 10) {
-                                ForEach(selectedAssetsPlayer2.sorted(), id: \.self) { asset in
-                                    Image("\(asset)")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 100, height: 100)
-                                        .rotationEffect(Angle(degrees: 360))
-                                        .position(x: 200, y:-280)
+                                Group {
+                                    if let selectedImage3 = selectedImage3 {
+                                        Image(selectedImage3)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 100, height: 100)
+                                            .position(x: 75, y: 300)
+                                            .rotationEffect(Angle(degrees: 90))
+                                    }
                                 }
-                            }
+                            
                         )
+
                 }
                 if currentPlayer == 1 {
                     Text("Tap to Bid")
@@ -223,15 +297,779 @@ struct BiddingView: View {
                         .overlay(
                             VStack {
                                 Spacer()
-                                assetSelectionView(player: 1, assets: [
-                                    [9, 18, 25, 31, 38],
-                                    [8, 17, 24, 30, 37],
-                                    [7, 16, 23, 29, 36]
-                                ])
+                                ZStack{
+                                    
+                                    if Bidding < 1 {
+                                        Image("1B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "1"
+                                            Bidding2 = 1
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1C"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 2 {
+                                        Image("2B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "2"
+                                            Bidding2 = 2
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 3 {
+                                        Image("3B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "3"
+                                            Bidding2 = 3
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 4 {
+                                        Image("4B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "4"
+                                            Bidding2 = 4
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 5 {
+                                        Image("5B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "5"
+                                            Bidding2 = 5
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 6 {
+                                        Image("6B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 0)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "6"
+                                            Bidding2 = 6
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 7 {
+                                        Image("7B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 0)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "7"
+                                            Bidding2 = 7
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 8 {
+                                        Image("8B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 0)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "8"
+                                            Bidding2 = 8
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 9 {
+                                        Image("9B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 0)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "9"
+                                            Bidding2 = 9
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 10 {
+                                        Image("10B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 0)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "10"
+                                            Bidding2 = 10
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 11 {
+                                        Image("11B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "11"
+                                            Bidding2 = 11
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 12 {
+                                        Image("12B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "12"
+                                            Bidding2 = 12
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 13 {
+                                        Image("13B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "13"
+                                            Bidding2 = 13
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 14 {
+                                        Image("14B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "14"
+                                            Bidding2 = 14
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 15 {
+                                        Image("15B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 20)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "15"
+                                            Bidding2 = 15
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 16 {
+                                        Image("16B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 40)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "16"
+                                            Bidding2 = 16
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 17 {
+                                        Image("17B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 40)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "17"
+                                            Bidding2 = 17
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 18 {
+                                        Image("18B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 40)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "18"
+                                            Bidding2 = 18
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 19 {
+                                        Image("19B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 40)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "19"
+                                            Bidding2 = 19
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 20 {
+                                        Image("20B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 40)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "20"
+                                            Bidding2 = 20
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 21 {
+                                        Image("21B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 60)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "21"
+                                            Bidding2 = 21
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 22 {
+                                        Image("22B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 60)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "22"
+                                            Bidding2 = 22
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 23 {
+                                        Image("23B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 60)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "23"
+                                            Bidding2 = 23
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 24 {
+                                        Image("24B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 60)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "24"
+                                            Bidding2 = 24
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 25 {
+                                        Image("25B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 60)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "25"
+                                            Bidding2 = 25
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 26 {
+                                        Image("26B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 80)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "26"
+                                            Bidding2 = 26
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 27 {
+                                        Image("27B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 80)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "27"
+                                            Bidding2 = 27
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 28 {
+                                        Image("28B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 80)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "28"
+                                            Bidding2 = 28
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 29 {
+                                        Image("29B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 80)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "29"
+                                            Bidding2 = 29
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 30 {
+                                        Image("30B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 80)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "30"
+                                            Bidding2 = 30
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6NT"
+                                        }
+                                    }
+                                        
+                                    if Bidding < 31 {
+                                        Image("31B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 100)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "31"
+                                            Bidding2 = 31
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 32 {
+                                        Image("32B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 100)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "32"
+                                            Bidding2 = 32
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 33 {
+                                        Image("33B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 100)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "33"
+                                            Bidding2 = 33
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 34 {
+                                        Image("34B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 100)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "34"
+                                            Bidding2 = 34
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 35 {
+                                        Image("35B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 100)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "35"
+                                            Bidding2 = 35
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7NT"
+                                        }
+                                    }
+                                    
+                                    if RDblTBOK == 1 {
+                                        Image("36B")
+                                            .resizable()
+                                            .frame(width: 30, height: 32)
+                                            .position(x: 80, y: 119)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "36"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "rdbl"
+                                        }
+                                    }
+
+                                    if DblTBOK == 1 {
+                                        Image("38B")
+                                            .resizable()
+                                            .frame(width: 25, height: 32)
+                                            .position(x: 144, y: 116)
+                                            .rotationEffect(.degrees(180))
+                                            .onTapGesture
+                                        {
+                                            selectedImage = "37"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 1
+                                            RDblTB = 0
+                                            Kontrak = "dbl"
+                                        }
+                                    }
+                                    
+                                    Image("37B")
+                                        .resizable()
+                                        .frame(width: 40, height: 45)
+                                        .position(x: 112, y: 118)
+                                        .rotationEffect(.degrees(180))
+                                        .onTapGesture
+                                    {
+                                        selectedImage = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("39B")
+                                        .resizable()
+                                        .frame(width: 92, height: 105)
+                                        .position(x: 111, y: 164)
+                                        .rotationEffect(.degrees(180))
+                                        .onTapGesture
+                                    {
+                                        selectedImage = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("SUBMIT")
+                                        .resizable()
+                                        .frame(width: 92, height: 90)
+                                        .position(x: 111, y: 230)
+                                        .rotationEffect(.degrees(180))
+                                        .onTapGesture
+                                    {
+                                        if (Kontrak != "pass")
+                                        {
+                                            if (Kontrak == "dbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else if (Kontrak == "rdbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else
+                                            {
+                                                Kontrakfix = Kontrak
+                                            }
+                                        }
+                                        if (Opening > 0 && Pass == 3)
+                                        {
+                                            currentPlayer = 0
+                                        }
+                                        else
+                                        {
+                                            currentPlayer = 2
+                                            Bidding = Bidding2
+                                        }
+                                        DblUSOK = DblUS
+                                        DblTBOK = DblTB
+                                        RDblUSOK = RDblUS
+                                        RDblTBOK = RDblTB
+                                    }
+                                }
+
                                 .opacity(isAssetSelectionVisible ? 1 : 0)
                                 .animation(.easeInOut)
                                 .onTapGesture {
                                     isAssetSelectionVisible.toggle()
+                                    showAlert.toggle()
+                                    
                                 }
                                 Spacer()
                             }
@@ -260,13 +1098,777 @@ struct BiddingView: View {
                         .overlay(
                             VStack {
                                 Spacer()
-                                assetSelectionView(player: 2, assets: [
-                                    [9, 8, 7],
-                                    [18, 17, 16],
-                                    [25, 24, 23],
-                                    [31, 30, 29],
-                                    [38, 37, 36]
-                                ])
+                                ZStack{
+                                    
+                                    if Bidding < 1 {
+                                        Image("1B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -100)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "1"
+                                            Bidding2 = 1
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1C"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 2 {
+                                        Image("2B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -100)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "2"
+                                            Bidding2 = 2
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 3 {
+                                        Image("3B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -100)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "3"
+                                            Bidding2 = 3
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 4 {
+                                        Image("4B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -100)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "4"
+                                            Bidding2 = 4
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 5 {
+                                        Image("5B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -100)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "5"
+                                            Bidding2 = 5
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 6 {
+                                        Image("6B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -80)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "6"
+                                            Bidding2 = 6
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 7 {
+                                        Image("7B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -80)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "7"
+                                            Bidding2 = 7
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 8 {
+                                        Image("8B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -80)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "8"
+                                            Bidding2 = 8
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 9 {
+                                        Image("9B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -80)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "9"
+                                            Bidding2 = 9
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 10 {
+                                        Image("10B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -80)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "10"
+                                            Bidding2 = 10
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 11 {
+                                        Image("11B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -60)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "11"
+                                            Bidding2 = 11
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 12 {
+                                        Image("12B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -60)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "12"
+                                            Bidding2 = 12
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 13 {
+                                        Image("13B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -60)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "13"
+                                            Bidding2 = 13
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 14 {
+                                        Image("14B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -60)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "14"
+                                            Bidding2 = 14
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 15 {
+                                        Image("15B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -60)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "15"
+                                            Bidding2 = 15
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 16 {
+                                        Image("16B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -40)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "16"
+                                            Bidding2 = 16
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 17 {
+                                        Image("17B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -40)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "17"
+                                            Bidding2 = 17
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 18 {
+                                        Image("18B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -40)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "18"
+                                            Bidding2 = 18
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 19 {
+                                        Image("19B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -40)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "19"
+                                            Bidding2 = 19
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 20 {
+                                        Image("20B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -40)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "20"
+                                            Bidding2 = 20
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 21 {
+                                        Image("21B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "21"
+                                            Bidding2 = 21
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 22 {
+                                        Image("22B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "22"
+                                            Bidding2 = 22
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 23 {
+                                        Image("23B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "23"
+                                            Bidding2 = 23
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 24 {
+                                        Image("24B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "24"
+                                            Bidding2 = 24
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 25 {
+                                        Image("25B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "25"
+                                            Bidding2 = 25
+                                            Pass = 0
+                                            
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 26 {
+                                        Image("26B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 0)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "26"
+                                            Bidding2 = 26
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 27 {
+                                        Image("27B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 0)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "27"
+                                            Bidding2 = 27
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 28 {
+                                        Image("28B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 0)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "28"
+                                            Bidding2 = 28
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 29 {
+                                        Image("29B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 0)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "29"
+                                            Bidding2 = 29
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 30 {
+                                        Image("30B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 0)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "30"
+                                            Bidding2 = 30
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6NT"
+                                        }
+                                    }
+                                        
+                                    if Bidding < 31 {
+                                        Image("31B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "31"
+                                            Bidding2 = 31
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 32 {
+                                        Image("32B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "32"
+                                            Bidding2 = 32
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 33 {
+                                        Image("33B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "33"
+                                            Bidding2 = 33
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 34 {
+                                        Image("34B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "34"
+                                            Bidding2 = 34
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 35 {
+                                        Image("35B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 20)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "35"
+                                            Bidding2 = 35
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7NT"
+                                        }
+                                    }
+                                    
+                                    if RDblUSOK == 1 {
+                                        Image("36B")
+                                            .resizable()
+                                            .frame(width: 30, height: 32)
+                                            .position(x: 80, y: 39)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "36"
+                                            
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "rdbl"
+                                        }
+                                    }
+
+                                    if DblUSOK == 1 {
+                                        Image("38B")
+                                            .resizable()
+                                            .frame(width: 25, height: 32)
+                                            .position(x: 144, y: 36)
+                                            .rotationEffect(.degrees(270))
+                                            .onTapGesture
+                                        {
+                                            selectedImage2 = "37"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 1
+                                            Kontrak = "dbl"
+                                        }
+                                    }
+                                    
+                                    Image("37B")
+                                        .resizable()
+                                        .frame(width: 40, height: 45)
+                                        .position(x: 112, y: 38)
+                                        .rotationEffect(.degrees(270))
+                                        .onTapGesture
+                                    {
+                                        selectedImage2 = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("39B")
+                                        .resizable()
+                                        .frame(width: 92, height: 105)
+                                        .position(x: 111, y: 84)
+                                        .rotationEffect(.degrees(270))
+                                        .onTapGesture
+                                    {
+                                        selectedImage2 = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("SUBMIT")
+                                        .resizable()
+                                        .frame(width: 100, height: 100)
+                                        .position(x: 250, y: 50)
+                                        .rotationEffect(.degrees(270))
+                                        .onTapGesture
+                                    {
+                                        if (Kontrak != "pass")
+                                        {
+                                            if (Kontrak == "dbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else if (Kontrak == "rdbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else
+                                            {
+                                                Kontrakfix = Kontrak
+                                            }
+                                        }
+                                        if (Opening > 0 && Pass == 3)
+                                        {
+                                            currentPlayer = 0
+                                        }
+                                        else
+                                        {
+                                            currentPlayer = 3
+                                            Bidding = Bidding2
+                                        }
+                                        
+                                        DblUSOK = DblUS
+                                        DblTBOK = DblTB
+                                        RDblUSOK = RDblUS
+                                        RDblTBOK = RDblTB
+                                    }
+                                }
+
                                 .opacity(isAssetSelectionVisible ? 1 : 0)
                                 .animation(.easeInOut)
                                 .onTapGesture {
@@ -299,11 +1901,809 @@ struct BiddingView: View {
                         .overlay(
                             VStack {
                                 Spacer()
-                                assetSelectionView(player: 3, assets: [
-                                    [38, 31, 25, 18, 9],
-                                    [37, 30, 24, 17, 8],
-                                    [36, 29, 23, 16, 7]
-                                ])
+                                ZStack{
+                                    
+                                    if Bidding < 1 {
+                                        Image("1B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 50)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "1"
+                                            Bidding2 = 1
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1C"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 2 {
+                                        Image("2B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 50)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "2"
+                                            Bidding2 = 2
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 3 {
+                                        Image("3B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 50)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "3"
+                                            Bidding2 = 3
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 4 {
+                                        Image("4B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 50)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "4"
+                                            Bidding2 = 4
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 5 {
+                                        Image("5B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 50)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "5"
+                                            Bidding2 = 5
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 6 {
+                                        Image("6B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 70)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "6"
+                                            Bidding2 = 6
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 7 {
+                                        Image("7B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 70)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "7"
+                                            Bidding2 = 7
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 8 {
+                                        Image("8B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 70)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "8"
+                                            Bidding2 = 8
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 9 {
+                                        Image("9B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 70)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "9"
+                                            Bidding2 = 9
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 10 {
+                                        Image("10B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 70)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "10"
+                                            Bidding2 = 10
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 11 {
+                                        Image("11B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 90)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "11"
+                                            Bidding2 = 11
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 12 {
+                                        Image("12B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 90)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "12"
+                                            Bidding2 = 12
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 13 {
+                                        Image("13B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 90)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "13"
+                                            Bidding2 = 13
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 14 {
+                                        Image("14B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 90)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "14"
+                                            Bidding2 = 14
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 15 {
+                                        Image("15B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 90)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "15"
+                                            Bidding2 = 15
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 16 {
+                                        Image("16B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 110)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "16"
+                                            Bidding2 = 16
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 17 {
+                                        Image("17B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 110)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "17"
+                                            Bidding2 = 17
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 18 {
+                                        Image("18B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 110)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "18"
+                                            Bidding2 = 18
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 19 {
+                                        Image("19B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 110)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "19"
+                                            Bidding2 = 19
+                                            Pass = 0
+                                            
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 20 {
+                                        Image("20B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 110)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "20"
+                                            Bidding2 = 20
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 21 {
+                                        Image("21B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 130)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "21"
+                                            Bidding2 = 21
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 22 {
+                                        Image("22B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 130)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "22"
+                                            Bidding2 = 22
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 23 {
+                                        Image("23B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 130)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "23"
+                                            Bidding2 = 23
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 24 {
+                                        Image("24B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 130)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "24"
+                                            Bidding2 = 24
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 25 {
+                                        Image("25B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 130)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "25"
+                                            Bidding2 = 25
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 26 {
+                                        Image("26B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 150)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "26"
+                                            Bidding2 = 26
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 27 {
+                                        Image("27B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 150)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "27"
+                                            Bidding2 = 27
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 28 {
+                                        Image("28B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 150)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "28"
+                                            Bidding2 = 28
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 29 {
+                                        Image("29B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 150)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "29"
+                                            Bidding2 = 29
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 30 {
+                                        Image("30B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 150)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "30"
+                                            Bidding2 = 30
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6NT"
+                                        }
+                                    }
+                                        
+                                    if Bidding < 31 {
+                                        Image("31B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 170)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "31"
+                                            Bidding2 = 31
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 32 {
+                                        Image("32B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 170)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "32"
+                                            Bidding2 = 32
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 33 {
+                                        Image("33B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 170)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "33"
+                                            Bidding2 = 33
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 34 {
+                                        Image("34B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 170)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "34"
+                                            Bidding2 = 34
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 35 {
+                                        Image("35B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 170)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "35"
+                                            Bidding2 = 35
+                                            Pass = 0
+                                            Pass = 0
+                                            DblUS = 1
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7NT"
+                                        }
+                                    }
+                                    
+                                    if RDblTBOK == 1 {
+                                        Image("36B")
+                                            .resizable()
+                                            .frame(width: 30, height: 32)
+                                            .position(x: 80, y: 189)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "36"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "rdbl"
+                                        }
+                                    }
+
+                                    if DblTBOK == 1 {
+                                        Image("38B")
+                                            .resizable()
+                                            .frame(width: 25, height: 32)
+                                            .position(x: 144, y: 186)
+                                            .rotationEffect(.degrees(0))
+                                            .onTapGesture
+                                        {
+                                            selectedImage3 = "37"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 1
+                                            RDblTB = 0
+                                            Kontrak = "dbl"
+                                        }
+                                    }
+                                    
+                                    Image("37B")
+                                        .resizable()
+                                        .frame(width: 40, height: 45)
+                                        .position(x: 112, y: 188)
+                                        .rotationEffect(.degrees(0))
+                                        .onTapGesture
+                                    {
+                                        selectedImage3 = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("39B")
+                                        .resizable()
+                                        .frame(width: 92, height: 105)
+                                        .position(x: 111, y: 234)
+                                        .rotationEffect(.degrees(0))
+                                        .onTapGesture
+                                    {
+                                        selectedImage3 = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("SUBMIT")
+                                        .resizable()
+                                        .frame(width: 92, height: 90)
+                                        .position(x: 111, y: 0)
+                                        .rotationEffect(.degrees(0))
+                                        .onTapGesture
+                                    {
+                                        if (Kontrak != "pass")
+                                        {
+                                            if (Kontrak == "dbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else if (Kontrak == "rdbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else
+                                            {
+                                                Kontrakfix = Kontrak
+                                            }
+                                        }
+                                        if (Opening > 0 && Pass == 3)
+                                        {
+                                            currentPlayer = 0
+                                        }
+                                        else
+                                        {
+                                            currentPlayer = 4
+                                            Bidding = Bidding2
+                                        }
+                                        DblUSOK = DblUS
+                                        DblTBOK = DblTB
+                                        RDblUSOK = RDblUS
+                                        RDblTBOK = RDblTB
+                                    }
+                                }
+
                                 .opacity(isAssetSelectionVisible ? 1 : 0)
                                 .animation(.easeInOut)
                                 .onTapGesture {
@@ -336,13 +2736,779 @@ struct BiddingView: View {
                         .overlay(
                             VStack {
                                 Spacer()
-                                assetSelectionView(player: 4, assets: [
-                                    [36, 37, 38],
-                                    [29, 30, 31],
-                                    [23, 24, 25],
-                                    [16, 17, 18],
-                                    [7, 8, 9]
-                                ])
+                                ZStack{
+                                    
+                                    if Bidding < 1 {
+                                        Image("1B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -110)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "1"
+                                            Bidding2 = 1
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1C"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 2 {
+                                        Image("2B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -110)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "2"
+                                            Bidding2 = 2
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 3 {
+                                        Image("3B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -110)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "3"
+                                            Bidding2 = 3
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 4 {
+                                        Image("4B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -110)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "4"
+                                            Bidding2 = 4
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 5 {
+                                        Image("5B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -110)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "5"
+                                            Bidding2 = 5
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "1NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 6 {
+                                        Image("6B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -90)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "6"
+                                            Bidding2 = 6
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 7 {
+                                        Image("7B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -90)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "7"
+                                            Bidding2 = 7
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 8 {
+                                        Image("8B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -90)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "8"
+                                            Bidding2 = 8
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 9 {
+                                        Image("9B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -90)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "9"
+                                            Bidding2 = 9
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 10 {
+                                        Image("10B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -90)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "10"
+                                            Bidding2 = 10
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "2NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 11 {
+                                        Image("11B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -70)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "11"
+                                            Bidding2 = 11
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 12 {
+                                        Image("12B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -70)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "12"
+                                            Bidding2 = 12
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 13 {
+                                        Image("13B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -70)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "13"
+                                            Bidding2 = 13
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 14 {
+                                        Image("14B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -70)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "14"
+                                            Bidding2 = 14
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 15 {
+                                        Image("15B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -70)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "15"
+                                            Bidding2 = 15
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "3NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 16 {
+                                        Image("16B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -50)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "16"
+                                            Bidding2 = 16
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 17 {
+                                        Image("17B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -50)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "17"
+                                            Bidding2 = 17
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 18 {
+                                        Image("18B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -50)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "18"
+                                            Bidding2 = 18
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 19 {
+                                        Image("19B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -50)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "19"
+                                            Bidding2 = 19
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 20 {
+                                        Image("20B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -50)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "20"
+                                            Bidding2 = 20
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "4NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 21 {
+                                        Image("21B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -30)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "21"
+                                            Bidding2 = 21
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 22 {
+                                        Image("22B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -30)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "22"
+                                            Bidding2 = 22
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 23 {
+                                        Image("23B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -30)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "23"
+                                            Bidding2 = 23
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 24 {
+                                        Image("24B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -30)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "24"
+                                            Bidding2 = 24
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 25 {
+                                        Image("25B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -30)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "25"
+                                            Bidding2 = 25
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "5NT"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 26 {
+                                        Image("26B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: -10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "26"
+                                            Bidding2 = 26
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 27 {
+                                        Image("27B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: -10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "27"
+                                            Bidding2 = 27
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 28 {
+                                        Image("28B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: -10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "28"
+                                            Bidding2 = 28
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 29 {
+                                        Image("29B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: -10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "29"
+                                            Bidding2 = 29
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 30 {
+                                        Image("30B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: -10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "30"
+                                            Bidding2 = 30
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "6NT"
+                                        }
+                                    }
+                                        
+                                    if Bidding < 31 {
+                                        Image("31B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 75, y: 10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "31"
+                                            Bidding2 = 31
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7C"
+                                        }
+                                    }
+                                               
+                                    if Bidding < 32 {
+                                        Image("32B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 93, y: 10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "32"
+                                            Bidding2 = 32
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7D"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 33 {
+                                        Image("33B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 111, y: 10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "33"
+                                            Bidding2 = 33
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7H"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 34 {
+                                        Image("34B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 129, y: 10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "34"
+                                            Bidding2 = 34
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7S"
+                                        }
+                                    }
+                                    
+                                    if Bidding < 35 {
+                                        Image("35B")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .position(x: 147, y: 10)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "35"
+                                            Bidding2 = 35
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 1
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "7NT"
+                                        }
+                                    }
+                                    
+                                    if RDblUSOK == 1 {
+                                        Image("36B")
+                                            .resizable()
+                                            .frame(width: 30, height: 32)
+                                            .position(x: 80, y: 29)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "36"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 0
+                                            Kontrak = "rdbl"
+                                        }
+                                    }
+
+                                    if DblUSOK == 1 {
+                                        Image("38B")
+                                            .resizable()
+                                            .frame(width: 25, height: 32)
+                                            .position(x: 144, y: 26)
+                                            .rotationEffect(.degrees(90))
+                                            .onTapGesture
+                                        {
+                                            selectedImage4 = "37"
+                                            Pass = 0
+                                            DblUS = 0
+                                            DblTB = 0
+                                            RDblUS = 0
+                                            RDblTB = 1
+                                            Kontrak = "dbl"
+                                        }
+                                    }
+                                    
+                                    Image("37B")
+                                        .resizable()
+                                        .frame(width: 40, height: 45)
+                                        .position(x: 112, y: 28)
+                                        .rotationEffect(.degrees(90))
+                                        .onTapGesture
+                                    {
+                                        selectedImage4 = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("39B")
+                                        .resizable()
+                                        .frame(width: 92, height: 105)
+                                        .position(x: 111, y: 74)
+                                        .rotationEffect(.degrees(90))
+                                        .onTapGesture
+                                    {
+                                        selectedImage4 = "38"
+                                        Pass = Pass + 1
+                                        print("pass")
+                                        Kontrak = "pass"
+                                    }
+                                    
+                                    Image("SUBMIT")
+                                        .resizable()
+                                        .frame(width: 100, height: 100)
+                                        .position(x: 250, y: 30)
+                                        .rotationEffect(.degrees(90))
+                                        .onTapGesture
+                                    {
+                                        if (Kontrak != "pass")
+                                        {
+                                            if (Kontrak == "dbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else if (Kontrak == "rdbl")
+                                            {
+                                                Kontrakfix = Kontrakfix + Kontrak
+                                            }
+                                            else
+                                            {
+                                                Kontrakfix = Kontrak
+                                            }
+                                        }
+                                        if Opening == 0 && Pass == 4
+                                        {
+                                            currentPlayer = 0
+                                            Kontrakfix = "All Pass"
+                                        }
+                                        else if (Opening > 0 && Pass == 3)
+                                        {
+                                            currentPlayer = 0
+                                        }
+                                        else
+                                        {
+                                            currentPlayer = 1
+                                            Bidding = Bidding2
+                                            Opening = Opening + 1
+                                        }
+                                        DblUSOK = DblUS
+                                        DblTBOK = DblTB
+                                        RDblUSOK = RDblUS
+                                        RDblTBOK = RDblTB
+                                    }
+                                }
+
                                 .opacity(isAssetSelectionVisible ? 1 : 0)
                                 .animation(.easeInOut)
                                 .onTapGesture {
@@ -369,52 +3535,7 @@ struct BiddingView: View {
             )
         }
     }
-    func assetSelectionView(player: Int, assets: [[Int]]) -> some View {
-        VStack {
-            ForEach(assets, id: \.self) { assetRow in
-                HStack {
-                    ForEach(assetRow, id: \.self) { asset in
-                        Button(action: {
-                            switch player {
-                            case 1:
-                                selectedAssetsPlayer1.insert(asset)
-                                currentPlayer += 1
-                                isAssetSelectionVisible = false
-                            case 2:
-                                selectedAssetsPlayer2.insert(asset)
-                                currentPlayer += 1
-                                isAssetSelectionVisible = false
-                            case 3:
-                                selectedAssetsPlayer3.insert(asset)
-                                currentPlayer += 1
-                                isAssetSelectionVisible = false
-                            case 4:
-                                selectedAssetsPlayer4.insert(asset)
-                                currentPlayer = 1
-                                isAssetSelectionVisible = false
-                            default:
-                                break
-                            }
 
-                            // Handle the selected asset
-                            print("Selected Assets Player \(player): \(selectedAssets(for: player))")
-                        }) {
-                            Image("\(asset)")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 50, height: 50)
-                                .rotationEffect(rotationAngle(for: player))
-                                .scaleEffect(2)
-                        }
-                    }
-                }
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(15)
-        .shadow(radius: 5)
-    }
 
     // Helper function to get selected assets for a specific player
     private func selectedAssets(for player: Int) -> Set<Int> {
@@ -446,24 +3567,6 @@ struct BiddingView: View {
         default:
             return Angle(degrees: 0)
         }
-    }
-}
-
-struct PlayerSquare: View {
-    let position: Int
-    let isDealer: Bool
-    let isCurrentPlayer: Bool
-
-    var body: some View {
-        VStack {
-            Text("Player \(position)")
-                .font(.subheadline)
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 100, height: 150)
-                .foregroundColor(isCurrentPlayer ? .yellow : .gray)
-                .overlay(isDealer ? Text("Dealer").foregroundColor(.red) : nil)
-        }
-        .padding()
     }
 }
 

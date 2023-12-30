@@ -129,71 +129,61 @@ struct ChooseBoardView: View {
                             )
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
-                        Button(action: {
-                            // Set the selected vulnerability to None
-                            selectedVulnerability = .none
-                        }) {
+
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .frame(width: 201, height: 39)
-                                    .foregroundColor(selectedVulnerability == .none ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                    .foregroundColor(boardNumber % 16 == 1 || boardNumber % 16 == 8 || boardNumber % 16 == 11 || boardNumber % 16 == 14 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                     .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
                                 
                                 Text("None")
                                     .font(Font.custom("Poppins", size: 20))
                                     .multilineTextAlignment(.center)
-                                    .foregroundColor(selectedVulnerability == .none ? .white : .black)
+                                    .foregroundColor(boardNumber % 16 == 1 || boardNumber % 16 == 8 || boardNumber % 16 == 11 || boardNumber % 16 == 14 ? .white : .black)
                             }
-                        }
+                        
                         .padding(.bottom, 10)
 
-                        Button(action: {
-                            // Set the selected vulnerability to North-South
-                            selectedVulnerability = .northSouth
-                        }) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .frame(width: 201, height: 39)
-                                    .foregroundColor(selectedVulnerability == .northSouth ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
-                                
-                                Text("North-South")
-                                    .font(Font.custom("Poppins", size: 20))
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(selectedVulnerability == .northSouth ? .white : .black)
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .frame(width: 201, height: 39)
+                                        .foregroundColor(boardNumber % 16 == 2 || boardNumber % 16 == 5 || boardNumber % 16 == 12 || boardNumber % 16 == 15 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                    
+                                    Text("North-South")
+                                        .font(Font.custom("Poppins", size: 20))
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(boardNumber % 16 == 2 || boardNumber % 16 == 5 || boardNumber % 16 == 12 || boardNumber % 16 == 15 ? .white : .black)
+                                }
+
                             }
-                        }
+                        
                         .padding(.bottom, 10)
-                        Button(action: {
-                            // Set the selected vulnerability to North-South
-                            selectedVulnerability = .eastWest
-                        }) {
+
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .frame(width: 201, height: 39)
-                                    .foregroundColor(selectedVulnerability == .eastWest ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                    .foregroundColor(boardNumber % 16 == 3 || boardNumber % 16 == 6 || boardNumber % 16 == 9 || boardNumber % 16 == 0 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                 
                                 Text("East-West")
                                     .font(Font.custom("Poppins", size: 20))
                                     .multilineTextAlignment(.center)
-                                    .foregroundColor(selectedVulnerability == .eastWest ? .white : .black)
+                                    .foregroundColor(boardNumber % 16 == 3 || boardNumber % 16 == 6 || boardNumber % 16 == 9 || boardNumber % 16 == 0 ? .white : .black)
                             }
-                        }
+                        
                         .padding(.bottom, 10)
-                        Button(action: {
-                            // Set the selected vulnerability to North-South
-                            selectedVulnerability = .all
-                        }) {
+
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20)
                                     .frame(width: 201, height: 39)
-                                    .foregroundColor(selectedVulnerability == .all ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                    .foregroundColor(boardNumber % 16 == 4 || boardNumber % 16 == 7 || boardNumber % 16 == 10 || boardNumber % 16 == 13 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                 
                                 Text("All")
                                     .font(Font.custom("Poppins", size: 20))
                                     .multilineTextAlignment(.center)
-                                    .foregroundColor(selectedVulnerability == .all ? .white : .black)
+                                    .foregroundColor(boardNumber % 16 == 4 || boardNumber % 16 == 7 || boardNumber % 16 == 10 || boardNumber % 16 == 13 ? .white : .black)
                             }
-                        }
+                        
                         .padding(.bottom, 10)
                         .padding(.bottom, 25)
                         Text("Dealer")
@@ -204,65 +194,57 @@ struct ChooseBoardView: View {
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                         HStack{
-                            Button(action: {
-                                selectedDealer = .west
-                            }) {
+
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 51, height: 51)
-                                        .foregroundColor(selectedDealer == .west ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                        .foregroundColor(boardNumber % 4 == 0 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                     
                                     Text("W")
                                         .font(Font.custom("Poppins", size: 20))
                                         .multilineTextAlignment(.center)
-                                        .foregroundColor(selectedDealer == .west ? .white : .black)
+                                        .foregroundColor(boardNumber % 4 == 0 ? .white : .black)
                                 }
-                            }
+                            
                             .padding(.trailing,5)
-                            Button(action: {
-                                selectedDealer = .north
-                            }) {
+
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 51, height: 51)
-                                        .foregroundColor(selectedDealer == .north ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                        .foregroundColor(boardNumber % 4 == 1  ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                     
                                     Text("N")
                                         .font(Font.custom("Poppins", size: 20))
                                         .multilineTextAlignment(.center)
-                                        .foregroundColor(selectedDealer == .north ? .white : .black)
+                                        .foregroundColor(boardNumber % 4 == 1 ? .white : .black)
                                 }
-                            }
+                            
                             .padding(.trailing,5)
-                            Button(action: {
-                                selectedDealer = .east
-                            }) {
+
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 51, height: 51)
-                                        .foregroundColor(selectedDealer == .east ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                        .foregroundColor(boardNumber % 4 == 2 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                     
                                     Text("E")
                                         .font(Font.custom("Poppins", size: 20))
                                         .multilineTextAlignment(.center)
-                                        .foregroundColor(selectedDealer == .east ? .white : .black)
+                                        .foregroundColor(boardNumber % 4 == 2 ? .white : .black)
                                 }
-                            }
+                            
                             .padding(.trailing,5)
-                            Button(action: {
-                                selectedDealer = .south
-                            }) {
+
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .frame(width: 51, height: 51)
-                                        .foregroundColor(selectedDealer == .south ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
+                                        .foregroundColor(boardNumber % 4 == 3 ? Color(red: 0.04, green: 0.57, blue: 0.51) : Color(red: 0.85, green: 0.85, blue: 0.85))
                                     
                                     Text("S")
                                         .font(Font.custom("Poppins", size: 20))
                                         .multilineTextAlignment(.center)
-                                        .foregroundColor(selectedDealer == .south ? .white : .black)
+                                        .foregroundColor(boardNumber % 4 == 3 ? .white : .black)
                                 }
-                            }
+                            
                             .padding(.trailing,5)
                         }
                     }

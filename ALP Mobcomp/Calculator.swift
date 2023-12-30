@@ -776,6 +776,10 @@ struct Calculator: View {
                             Result = selected + selectedOperation + String(selectedResult)
                         }
                     }
+                    
+                    if selectedNumber == 1 {
+                        
+                    }
                 }
         }
     }
