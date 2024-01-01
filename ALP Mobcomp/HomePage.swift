@@ -48,7 +48,7 @@ struct HomePage: View {
                             EmptyView()
                         }
                         
-                        NavigationLink(destination: Calculator(), isActive: $isCalculatorViewActive) {
+                        NavigationLink(destination: Calculator(isLightMode: $isLightMode), isActive: $isCalculatorViewActive) {
                             Button(action: {
                                 isCalculatorViewActive = true
                             }) {
@@ -83,7 +83,7 @@ struct HomePage: View {
                         }
                         
                         // NavigationLink ke BiddingView saat button Bidding ditekan
-                        NavigationLink(destination: BiddingView(), isActive: $isBiddingViewActive) {
+                        NavigationLink(destination: BiddingView(isLightMode: $isLightMode), isActive: $isBiddingViewActive) {
                             Button(action: {
                                 isBiddingViewActive = true
                             }) {
@@ -143,6 +143,7 @@ struct HomePage: View {
             }
             .background(isLightMode ? Color.white: Color.black)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

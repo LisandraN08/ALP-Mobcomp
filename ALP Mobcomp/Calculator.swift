@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Calculator: View {
+    @Binding var isLightMode: Bool
     @State private var heightLayar = UIScreen.main.bounds.height
     @State private var widthLayar = UIScreen.main.bounds.width
     @State private var isVulSelected = false
@@ -42,7 +43,7 @@ struct Calculator: View {
                     //background
                     Image("Ellipse 1")
                         .frame(width: 1277.08508, height: 862.28662)
-                        .background(
+                        .background( isLightMode ?
                             LinearGradient(
                                 stops: [
                                     Gradient.Stop(color: Color(red: 0.26, green: 0.52, blue: 0.61), location: 0.02),
@@ -52,7 +53,14 @@ struct Calculator: View {
                                 ],
                                 startPoint: UnitPoint(x: 1, y: 0.18),
                                 endPoint: UnitPoint(x: 0.15, y: 0.83)
-                            )
+                            ) : LinearGradient(
+                                stops: [
+                                Gradient.Stop(color: Color(red: 0.15, green: 0.15, blue: 0.16), location: 0.23),
+                                Gradient.Stop(color: Color(red: 0, green: 0.01, blue: 0.03), location: 1.00),
+                                ],
+                                startPoint: UnitPoint(x: 0, y: 0),
+                                endPoint: UnitPoint(x: 1, y: 1)
+                                )
                         )
                         .blur(radius: 182)
                         .rotationEffect(Angle(degrees: -15))
@@ -63,7 +71,7 @@ struct Calculator: View {
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 423, height: 537)
-                        .background(
+                        .background( isLightMode ?
                             LinearGradient(
                                 stops: [
                                     Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 1), location: 0.00),
@@ -71,7 +79,15 @@ struct Calculator: View {
                                 ],
                                 startPoint: UnitPoint(x: 0.5, y: 0),
                                 endPoint: UnitPoint(x: 0.5, y: 1)
-                            )
+                            ) : LinearGradient(
+                                stops: [
+                                Gradient.Stop(color: Color(red: 0.14, green: 0.4, blue: 0.51), location: 0.29),
+                                Gradient.Stop(color: Color(red: 0.06, green: 0.14, blue: 0.27), location: 0.67),
+                                Gradient.Stop(color: .black, location: 1.00),
+                                ],
+                                startPoint: UnitPoint(x: 0.03, y: 0.02),
+                                endPoint: UnitPoint(x: 1.08, y: 1.08)
+                                )
                         )
                         .cornerRadius(30)
                         .shadow(color: .black.opacity(0.1), radius: 35, x: 0, y: -5)
@@ -83,7 +99,7 @@ struct Calculator: View {
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 355, height: 70)
-                        .background(.white.opacity(0.3))
+                        .background(isLightMode ? .white.opacity(0.3) : Color(red: 0, green: 0.13, blue: 0.21).opacity(0.4))
                         .cornerRadius(40)
                         .shadow(color: .black.opacity(0.05), radius: 7.5, x: 0, y: 3)
                         .position(CGPoint(x: widthLayar * 0.49, y: heightLayar * 0.41))
@@ -108,7 +124,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 150, height: 70, alignment: .center)
                         .position(CGPoint(x: widthLayar * 0.71, y: heightLayar * 0.412))
                         .onTapGesture {
@@ -144,7 +160,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 70, height: 70, alignment: .center)
                         .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.612))
                         .onTapGesture {
@@ -164,7 +180,7 @@ struct Calculator: View {
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 423, height: 537)
-                        .background(
+                        .background( isLightMode ?
                             LinearGradient(
                                 stops: [
                                     Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 1), location: 0.00),
@@ -172,7 +188,15 @@ struct Calculator: View {
                                 ],
                                 startPoint: UnitPoint(x: 0.5, y: 0),
                                 endPoint: UnitPoint(x: 0.5, y: 1)
-                            )
+                            ) : LinearGradient(
+                                stops: [
+                                Gradient.Stop(color: Color(red: 0.14, green: 0.4, blue: 0.51), location: 0.29),
+                                Gradient.Stop(color: Color(red: 0.06, green: 0.14, blue: 0.27), location: 0.67),
+                                Gradient.Stop(color: .black, location: 1.00),
+                                ],
+                                startPoint: UnitPoint(x: 0.03, y: 0.02),
+                                endPoint: UnitPoint(x: 1.08, y: 1.08)
+                                )
                         )
                         .cornerRadius(30)
                         .shadow(color: .black.opacity(0.1), radius: 35, x: 0, y: -5)
@@ -188,7 +212,7 @@ struct Calculator: View {
                     Rectangle()
                         .foregroundColor(.clear)
                         .frame(width: 270, height: 70)
-                        .background(.white.opacity(0.3))
+                        .background(isLightMode ? .white.opacity(0.3) : Color(red: 0.02, green: 0.02, blue: 0.02).opacity(0.3))
                         .cornerRadius(40)
                         .shadow(color: .black.opacity(0.05), radius: 7.5, x: 0, y: 3)
                         .position(CGPoint(x: widthLayar * 0.37, y: heightLayar * 0.498)) //OKE
@@ -206,7 +230,7 @@ struct Calculator: View {
                     
                     Image("akar-icons_backspace-2")
                         .frame(width: 28, height: 33)
-                        .background(.black.opacity(0))
+                        .background(isLightMode ? .black.opacity(0) : .white)
                         .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.51))
                         .onTapGesture {
                             isDoubleSelected = false
@@ -226,7 +250,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 70, height: 70, alignment: .center)
                         .position(CGPoint(x: widthLayar * 0.12, y: heightLayar * 0.495))
                         .onTapGesture {
@@ -250,7 +274,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 70, height: 70, alignment: .center)
                         .position(CGPoint(x: widthLayar * 0.37, y: heightLayar * 0.495))
                         .onTapGesture {
@@ -275,7 +299,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 70, height: 70, alignment: .center)
                         .position(CGPoint(x: widthLayar * 0.61, y: heightLayar * 0.495))
                         .onTapGesture {
@@ -342,7 +366,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 70, height: 70, alignment: .center)
                         .position(CGPoint(x: widthLayar * 0.1, y: heightLayar * 0.35))
                     
@@ -352,7 +376,7 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.trailing)
-                        .foregroundColor(.black)
+                        .foregroundColor(isLightMode ? .black : .white)
                         .frame(width: 165, height: 70, alignment: .trailing)
                         .position(CGPoint(x: widthLayar * 0.7, y: heightLayar * 0.35))
                     
@@ -376,7 +400,7 @@ struct Calculator: View {
                 Rectangle()
                     .foregroundColor(.clear)
                     .frame(width: 423, height: 537)
-                    .background(
+                    .background(isLightMode ?
                         LinearGradient(
                             stops: [
                                 Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 1), location: 0.00),
@@ -384,7 +408,15 @@ struct Calculator: View {
                             ],
                             startPoint: UnitPoint(x: 0.5, y: 0),
                             endPoint: UnitPoint(x: 0.5, y: 1)
-                        )
+                        ) : LinearGradient(
+                            stops: [
+                            Gradient.Stop(color: Color(red: 0.14, green: 0.4, blue: 0.51), location: 0.29),
+                            Gradient.Stop(color: Color(red: 0.06, green: 0.14, blue: 0.27), location: 0.67),
+                            Gradient.Stop(color: .black, location: 1.00),
+                            ],
+                            startPoint: UnitPoint(x: 0.03, y: 0.02),
+                            endPoint: UnitPoint(x: 1.08, y: 1.08)
+                            )
                     )
                     .cornerRadius(30)
                     .shadow(color: .black.opacity(0.1), radius: 35, x: 0, y: -5)
@@ -416,7 +448,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.center)
-                    .foregroundColor(Color(red: 0.04, green: 0.04, blue: 0.04))
+                    .foregroundColor(isLightMode ? Color(red: 0.04, green: 0.04, blue: 0.04) : Color(red: 0.98, green: 0.98, blue: 0.98))
                     .frame(width: 70, height: 70, alignment: .center)
                     .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.712))
                     .onTapGesture {
@@ -441,7 +473,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 70, height: 70, alignment: .center)
                     .position(CGPoint(x: widthLayar * 0.1, y: heightLayar * 0.45))
                 
@@ -451,7 +483,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.trailing)
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 165, height: 70, alignment: .trailing)
                     .position(CGPoint(x: widthLayar * 0.7, y: heightLayar * 0.45))
                 
@@ -462,7 +494,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.trailing)
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 165, height: 70, alignment: .trailing)
                     .position(CGPoint(x: widthLayar * 0.7, y: heightLayar * 0.35))
             }
@@ -474,7 +506,7 @@ struct Calculator: View {
                 Rectangle()
                     .foregroundColor(.clear)
                     .frame(width: 423, height: 537)
-                    .background(
+                    .background( isLightMode ?
                         LinearGradient(
                             stops: [
                                 Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 1), location: 0.00),
@@ -482,7 +514,15 @@ struct Calculator: View {
                             ],
                             startPoint: UnitPoint(x: 0.5, y: 0),
                             endPoint: UnitPoint(x: 0.5, y: 1)
-                        )
+                        ) : LinearGradient(
+                            stops: [
+                            Gradient.Stop(color: Color(red: 0.14, green: 0.4, blue: 0.51), location: 0.29),
+                            Gradient.Stop(color: Color(red: 0.06, green: 0.14, blue: 0.27), location: 0.67),
+                            Gradient.Stop(color: .black, location: 1.00),
+                            ],
+                            startPoint: UnitPoint(x: 0.03, y: 0.02),
+                            endPoint: UnitPoint(x: 1.08, y: 1.08)
+                            )
                     )
                     .cornerRadius(30)
                     .shadow(color: .black.opacity(0.1), radius: 35, x: 0, y: -5)
@@ -522,7 +562,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.center)
-                    .foregroundColor(Color(red: 0.04, green: 0.04, blue: 0.04))
+                    .foregroundColor(isLightMode ? Color(red: 0.04, green: 0.04, blue: 0.04) : Color(red: 0.98, green: 0.98, blue: 0.98))
                     .frame(width: 70, height: 70, alignment: .center)
                     .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.712))
                     .onTapGesture {
@@ -547,7 +587,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 70, height: 70, alignment: .center)
                     .position(CGPoint(x: widthLayar * 0.1, y: heightLayar * 0.45))
                 
@@ -557,7 +597,7 @@ struct Calculator: View {
                             .weight(.semibold)
                     )
                     .multilineTextAlignment(.trailing)
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 165, height: 70, alignment: .trailing)
                     .position(CGPoint(x: widthLayar * 0.7, y: heightLayar * 0.45))
 
@@ -566,7 +606,7 @@ struct Calculator: View {
                         Font.custom("Poppins", size: 32)
                             .weight(.semibold)
                     )
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 150, height: 70, alignment: .leading)
                     .position(CGPoint(x: widthLayar * 0.25, y: heightLayar * 0.3))
                 
@@ -590,7 +630,7 @@ struct Calculator: View {
                         Font.custom("Poppins", size: 32)
                             .weight(.semibold)
                     )
-                    .foregroundColor(.black)
+                    .foregroundColor(isLightMode ? .black : .white)
                     .frame(width: 150, height: 70, alignment: .leading)
                 
                     .position(CGPoint(x: widthLayar * 0.25, y: heightLayar * 0.2))
@@ -612,6 +652,7 @@ struct Calculator: View {
         
         }
     }
+        
     
 // ------------------------------------------------------------------------
     func resetVariables() {
@@ -638,9 +679,9 @@ struct Calculator: View {
     
     func createTabLabels() -> some View {
         ZStack {
-            Image("back")
-                .frame(width: 29, height: 29)
-                .position(CGPoint(x: widthLayar * 0.1, y: heightLayar * 0.012))
+//            Image("back")
+//                .frame(width: 29, height: 29)
+//                .position(CGPoint(x: widthLayar * 0.1, y: heightLayar * 0.012))
             
             Text("Calculator")
                 .font(
@@ -648,7 +689,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ? .black : .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.3, y: heightLayar * 0.012))
             
@@ -658,7 +699,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ? .black : .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.83, y: heightLayar * 0.012))
                 .onTapGesture{
@@ -674,7 +715,7 @@ struct Calculator: View {
                         .weight(.bold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ? .black : .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.68, y: heightLayar * 0.012))
                 .onTapGesture{
@@ -690,7 +731,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ? .black : .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.93, y: heightLayar * 0.012))
                 .onTapGesture{
@@ -739,7 +780,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ? .black : .white)
                 .frame(width: 70, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * positionX, y: heightLayar * positionY))
                 .onTapGesture {
@@ -762,7 +803,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ?.black:.white)
                 .frame(width: 70, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * posX, y: heightLayar * posY))
                 .onTapGesture {
@@ -797,7 +838,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ?.black : .white)
                 .frame(width: 70, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * positionX, y: heightLayar * positionY))
                 .onTapGesture {
@@ -822,7 +863,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(.black)
+                .foregroundColor(isLightMode ? .black : .white)
                 .frame(width: 70, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * positionX, y: heightLayar * positionY))
                 .onTapGesture {
@@ -843,7 +884,7 @@ struct Calculator: View {
         }
     }
 }
-
-#Preview {
-    Calculator()
-}
+//
+//#Preview {
+//    Calculator()
+//}

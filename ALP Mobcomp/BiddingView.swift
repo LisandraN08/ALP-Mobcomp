@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BiddingView: View {
-    @State private var colorScheme: ColorScheme = .dark
+    @Binding var isLightMode: Bool
     @State private var tableNumber: Int = 1
     @State private var dealerPosition: Int = 1
     @State private var selectedAssetsPlayer1: Set<Int> = []
@@ -42,9 +42,12 @@ struct BiddingView: View {
     @State private var isCalculatorViewActive = false
     @State private var x: CGFloat = 180
     @State private var Angka: Int = 1
+    
+    init(isLightMode: Binding<Bool>) {
+        _isLightMode = isLightMode
+    }
 
     var body: some View {
-        NavigationView {
             ZStack {
                 VStack {
                     Rectangle() //utara
@@ -55,41 +58,38 @@ struct BiddingView: View {
                         .shadow(color: .black.opacity(0.25), radius: 3, x: 4, y: 4)
                         .rotationEffect(Angle(degrees: 90))
                         .overlay(
-                                Group {
-                                    if let selectedImage = selectedImage {
-                                        Image(selectedImage)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 100, height: 100)
-                                            .position(x: 80, y: 300)
-                                            .rotationEffect(Angle(degrees: 270))
-                                    }
-                                    
+                            HStack(spacing: 10) {
+                                ForEach(selectedAssetsPlayer1.sorted(), id: \.self) { asset in
+                                    Image("\(asset)")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 100, height: 100)
+                                        .rotationEffect(Angle(degrees: 270))
+                                        .position(x: -30, y:150)
                                 }
-                            
+                            }
                         )
 
                     HStack(spacing: 0) {
                         Rectangle() //barat
                             .foregroundColor(.clear)
                             .frame(width:435, height: 123)  // Set the desired height here
-                            .background(Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
+                            .background(isLightMode ? .white.opacity(0.5) : Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
                             .cornerRadius(20)
                             .shadow(color: .black.opacity(0.25), radius: 3, x: 4, y: 4)
                             .rotationEffect(Angle(degrees: 90))
                             .frame(minWidth: 0, maxWidth: .infinity)  // Set the desired width range here
                             .overlay(
-                                    Group {
-                                        if let selectedImage4 = selectedImage4 {
-                                            Image(selectedImage4)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 100, height: 100)
-                                                .position(x: 75, y: 220)
-                                                .rotationEffect(Angle(degrees: 180))
-                                        }
+                                VStack(spacing: 10) {
+                                    ForEach(selectedAssetsPlayer4.sorted(), id: \.self) { asset in
+                                        Image("\(asset)")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 100, height: 100)
+                                            .rotationEffect(Angle(degrees: 180))
+                                            .position(x: 60, y: 220)
                                     }
-                                
+                                }
                             )
 
                         VStack{
@@ -97,7 +97,14 @@ struct BiddingView: View {
                                 Rectangle()
                                     .foregroundColor(.clear)
                                     .frame(width: 126, height: 45)
-                                    .background(
+                                    .background( isLightMode ? LinearGradient(
+                                        stops: [
+                                        Gradient.Stop(color: Color(red: 0.4, green: 0.64, blue: 0.78), location: 0.00),
+                                        Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 0.99), location: 1.00),
+                                        ],
+                                        startPoint: UnitPoint(x: 0.5, y: 0),
+                                        endPoint: UnitPoint(x: 0.5, y: 1)
+                                        ) :
                                         LinearGradient(
                                             stops: [
                                                 Gradient.Stop(color: Color(red: 0.54, green: 0.73, blue: 0.79), location: 0.00),
@@ -153,8 +160,15 @@ struct BiddingView: View {
                             Rectangle()
                                 .foregroundColor(.clear)
                                 .frame(width: 50, height: 50)
-                                .background(
+                                .background( isLightMode ?
                                     LinearGradient(
+                                    stops: [
+                                    Gradient.Stop(color: Color(red: 0.4, green: 0.64, blue: 0.78), location: 0.00),
+                                    Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 0.99), location: 1.00),
+                                    ],
+                                    startPoint: UnitPoint(x: 0.5, y: 0),
+                                    endPoint: UnitPoint(x: 0.5, y: 1)
+                                    ) : LinearGradient(
                                         stops: [
                                             Gradient.Stop(color: Color(red: 0.54, green: 0.73, blue: 0.79), location: 0.00),
                                             Gradient.Stop(color: Color(red: 0.72, green: 1, blue: 0.95), location: 1.00),
@@ -190,7 +204,14 @@ struct BiddingView: View {
                                 Rectangle()
                                     .foregroundColor(.clear)
                                     .frame(width: 126, height: 45)
-                                    .background(
+                                    .background(isLightMode ? LinearGradient(
+                                        stops: [
+                                        Gradient.Stop(color: Color(red: 0.4, green: 0.64, blue: 0.78), location: 0.00),
+                                        Gradient.Stop(color: Color(red: 0.62, green: 0.91, blue: 0.99), location: 1.00),
+                                        ],
+                                        startPoint: UnitPoint(x: 0.5, y: 0),
+                                        endPoint: UnitPoint(x: 0.5, y: 1)
+                                    ) :
                                         LinearGradient(
                                             stops: [
                                                 Gradient.Stop(color: Color(red: 0.54, green: 0.73, blue: 0.79), location: 0.00),
@@ -230,23 +251,22 @@ struct BiddingView: View {
                         Rectangle() //timur
                             .foregroundColor(.clear)
                             .frame(width:435, height: 123)  // Set the desired height here
-                            .background(Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
+                            .background(isLightMode ? .white.opacity(0.5) : Color(red: 0.82, green: 0.86, blue: 0.88).opacity(0.5))
                             .cornerRadius(20)
                             .shadow(color: .black.opacity(0.25), radius: 3, x: 4, y: 4)
                             .rotationEffect(Angle(degrees: 90))
                             .frame(minWidth: 0, maxWidth: .infinity)  // Set the desired width range here
                             .overlay(
-                                    Group {
-                                        if let selectedImage2 = selectedImage2 {
-                                            Image(selectedImage2)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 100, height: 100)
-                                                .position(x: 80, y: 210)
-                                                .rotationEffect(Angle(degrees: 0))
-                                        }
+                                VStack(spacing: 10) {
+                                    ForEach(selectedAssetsPlayer3.sorted(), id: \.self) { asset in
+                                        Image("\(asset)")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 100, height: 100)
+                                            .rotationEffect(Angle(degrees: 90))
+                                            .position(x: 70, y:400)
                                     }
-                                
+                                }
                             )
 
                     }
@@ -259,18 +279,18 @@ struct BiddingView: View {
                         .shadow(color: .black.opacity(0.25), radius: 3, x: 4, y: 4)
                         .rotationEffect(Angle(degrees: 90))
                         .overlay(
-                                Group {
-                                    if let selectedImage3 = selectedImage3 {
-                                        Image(selectedImage3)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 100, height: 100)
-                                            .position(x: 75, y: 300)
-                                            .rotationEffect(Angle(degrees: 90))
-                                    }
+                            HStack(spacing: 10) {
+                                ForEach(Array(selectedAssetsPlayer2.sorted().enumerated()), id: \.element) { index, asset in
+                                    Image("\(asset)")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 100, height: 100)
+                                        .rotationEffect(Angle(degrees: 360))
+                                        .position(x: 200, y: -280 + 30 * CGFloat(index))
                                 }
-                            
+                            }
                         )
+
 
                 }
                 if currentPlayer == 1 {
@@ -285,7 +305,7 @@ struct BiddingView: View {
                         .padding(20)
                         .padding(.leading, 15)
                         .padding(.trailing, 15)
-                        .background(Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
+                        .background(isLightMode ? Color(red: 0.06, green: 0.14, blue: 0.27).opacity(0.5) : Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
                         .cornerRadius(40)
                         .rotationEffect(Angle(degrees: 180))
                         .offset(x: 0, y: -300)
@@ -1061,7 +1081,12 @@ struct BiddingView: View {
                                         DblTBOK = DblTB
                                         RDblUSOK = RDblUS
                                         RDblTBOK = RDblTB
+                                        
+                                        if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
+                                            selectedAssetsPlayer1.insert(intValue)
+                                        }
                                     }
+                                    
                                 }
 
                                 .opacity(isAssetSelectionVisible ? 1 : 0)
@@ -1086,7 +1111,7 @@ struct BiddingView: View {
                         .padding(20)
                         .padding(.leading,15)
                         .padding(.trailing,15)
-                        .background(Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
+                        .background(isLightMode ? Color(red: 0.06, green: 0.14, blue: 0.27).opacity(0.5) : Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
                         .cornerRadius(40)
                         .rotationEffect(Angle(degrees: 270))
                         .offset(x: 120, y: 0)
@@ -1866,6 +1891,11 @@ struct BiddingView: View {
                                         DblTBOK = DblTB
                                         RDblUSOK = RDblUS
                                         RDblTBOK = RDblTB
+                                        
+                                        if let selectedImage2 = selectedImage2, let intValue = Int(selectedImage2) {
+                                            // Assuming selectedImage is a string representation of an integer
+                                            selectedAssetsPlayer2.insert(intValue)
+                                        }
                                     }
                                 }
 
@@ -1889,7 +1919,7 @@ struct BiddingView: View {
                         .padding(20)
                         .padding(.leading,15)
                         .padding(.trailing,15)
-                        .background(Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
+                        .background(isLightMode ? Color(red: 0.06, green: 0.14, blue: 0.27).opacity(0.5) : Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
                         .cornerRadius(40)
                         .rotationEffect(Angle(degrees: 0))
                         .offset(x: 0, y: 300)
@@ -2701,6 +2731,11 @@ struct BiddingView: View {
                                         DblTBOK = DblTB
                                         RDblUSOK = RDblUS
                                         RDblTBOK = RDblTB
+                                        
+                                        if let selectedImage3 = selectedImage3, let intValue = Int(selectedImage3) {
+                                            // Assuming selectedImage is a string representation of an integer
+                                            selectedAssetsPlayer3.insert(intValue)
+                                        }
                                     }
                                 }
 
@@ -2724,7 +2759,7 @@ struct BiddingView: View {
                         .padding(20)
                         .padding(.leading,15)
                         .padding(.trailing,15)
-                        .background(Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
+                        .background(isLightMode ? Color(red: 0.06, green: 0.14, blue: 0.27).opacity(0.5) : Color(red: 16/255, green: 37/255, blue: 68/255, opacity: 0.5))
                         .cornerRadius(40)
                         .rotationEffect(Angle(degrees: 90))
                         .offset(x: -120, y: 0)
@@ -3506,6 +3541,11 @@ struct BiddingView: View {
                                         DblTBOK = DblTB
                                         RDblUSOK = RDblUS
                                         RDblTBOK = RDblTB
+                                        
+                                        if let selectedImage4 = selectedImage4, let intValue = Int(selectedImage4) {
+                                            // Assuming selectedImage is a string representation of an integer
+                                            selectedAssetsPlayer4.insert(intValue)
+                                        }
                                     }
                                 }
 
@@ -3521,8 +3561,16 @@ struct BiddingView: View {
                 
             }
             .frame(width: 393, height: 852)
-            .background(
-                LinearGradient(
+            .background( isLightMode ?
+                    LinearGradient(
+                    stops: [
+                    Gradient.Stop(color: Color(red: 0.55, green: 0.7, blue: 0.9), location: 0.00),
+                    Gradient.Stop(color: Color(red: 0.57, green: 0.75, blue: 0.89), location: 0.48),
+                    Gradient.Stop(color: Color(red: 0.72, green: 0.96, blue: 1), location: 1.00),
+                    ],
+                    startPoint: UnitPoint(x: 0.03, y: 0.02),
+                    endPoint: UnitPoint(x: 1.08, y: 1.08)
+                    ) : LinearGradient(
                     stops: [
                         Gradient.Stop(color: Color(red: 0.26, green: 0.53, blue: 0.61), location: 0.00),
                         Gradient.Stop(color: Color(red: 0.14, green: 0.4, blue: 0.51), location: 0.29),
@@ -3534,7 +3582,6 @@ struct BiddingView: View {
                 )
             )
         }
-    }
 
 
     // Helper function to get selected assets for a specific player
@@ -3570,6 +3617,6 @@ struct BiddingView: View {
     }
 }
 
-#Preview {
-    BiddingView()
-}
+//#Preview {
+//    BiddingView()
+//}
