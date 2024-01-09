@@ -11,7 +11,8 @@ import SwiftUI
 struct ALP_MobcompApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            BiddingView()
         }
     }
 }
