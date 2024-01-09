@@ -12,10 +12,10 @@ struct BiddingView: View {
     @State private var isLightMode = false
     @State private var tableNumber: Int = 1
     @State private var dealerPosition: Int = 1
-    @State private var selectedAssetsPlayer1: Set<Int> = []
-    @State private var selectedAssetsPlayer2: Set<Int> = []
-    @State private var selectedAssetsPlayer3: Set<Int> = []
-    @State private var selectedAssetsPlayer4: Set<Int> = []
+    @State private var selectedAssetsPlayer1: [Int] = []
+    @State private var selectedAssetsPlayer2: [Int] = []
+    @State private var selectedAssetsPlayer3: [Int] = []
+    @State private var selectedAssetsPlayer4: [Int] = []
     @State private var isAssetSelectionVisible = false
     @State private var currentPlayer = 1
     @State private var heightLayar = UIScreen.main.bounds.height
@@ -1108,7 +1108,7 @@ struct BiddingView: View {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
                                                     if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.insert(intValue)
+                                                        selectedAssetsPlayer1.append(intValue)
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -1129,7 +1129,7 @@ struct BiddingView: View {
 
                                                 if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
 
-                                                    selectedAssetsPlayer1.insert(intValue)
+                                                    selectedAssetsPlayer1.append(intValue)
                                                 }
                                             }
                                             else
@@ -1156,18 +1156,18 @@ struct BiddingView: View {
                                                 if !selectedAssetsPlayer4.isEmpty {
                                                     var selectedArray = Array(selectedAssetsPlayer4)
                                                     selectedArray.removeLast()
-                                                    selectedAssetsPlayer4 = Set(selectedArray)
+                                                    selectedAssetsPlayer4 = Array(Set(selectedArray))
 
 
                                                     // Mengatur bidding berdasarkan kondisi yang Anda sebutkan
                                                     if selectedAssetsPlayer3.isEmpty {
                                                         Bidding = 0
                                                     }
-                                                    else if let lastAsset = selectedAssetsPlayer3.subtracting([36, 37, 38, 39]).max() {
+                                                    else if let lastAsset = selectedAssetsPlayer3.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer2.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer2.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer1.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer1.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
                                                     }
                                                     guard let lastAssetPlayer3 = selectedAssetsPlayer3.max() else {
@@ -2023,7 +2023,7 @@ struct BiddingView: View {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
                                                     if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.insert(intValue)
+                                                        selectedAssetsPlayer1.append(intValue)
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -2049,7 +2049,7 @@ struct BiddingView: View {
 
                                                 if let selectedImage2 = selectedImage2, let intValue = Int(selectedImage2) {
                                                     // Assuming selectedImage is a string representation of an integer
-                                                    selectedAssetsPlayer2.insert(intValue)
+                                                    selectedAssetsPlayer2.append(intValue)
                                                 }
                                             }
                                             else
@@ -2077,18 +2077,18 @@ struct BiddingView: View {
                                                 if !selectedAssetsPlayer1.isEmpty {
                                                     var selectedArray = Array(selectedAssetsPlayer1)
                                                     selectedArray.removeLast()
-                                                    selectedAssetsPlayer1 = Set(selectedArray)
+                                                    selectedAssetsPlayer1 = Array(Set(selectedArray))
                                                     currentPlayer = 1
 
                                                     // Mengatur bidding berdasarkan kondisi yang Anda sebutkan
                                                     if selectedAssetsPlayer4.isEmpty {
                                                         Bidding = 0
                                                     }
-                                                    else if let lastAsset = selectedAssetsPlayer4.subtracting([36, 37, 38, 39]).max() {
+                                                    else if let lastAsset = selectedAssetsPlayer4.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer3.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer3.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer2.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer2.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
                                                     }
                                                     guard let lastAssetPlayer4 = selectedAssetsPlayer4.max() else {
@@ -2974,7 +2974,7 @@ struct BiddingView: View {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
                                                     if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.insert(intValue)
+                                                        selectedAssetsPlayer1.append(intValue)
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -2999,7 +2999,7 @@ struct BiddingView: View {
 
                                                 if let selectedImage3 = selectedImage3, let intValue = Int(selectedImage3) {
                                                     // Assuming selectedImage is a string representation of an integer
-                                                    selectedAssetsPlayer3.insert(intValue)
+                                                    selectedAssetsPlayer3.append(intValue)
                                                 }
 
                                             }
@@ -3027,18 +3027,18 @@ struct BiddingView: View {
                                                 if !selectedAssetsPlayer2.isEmpty {
                                                     var selectedArray = Array(selectedAssetsPlayer2)
                                                     selectedArray.removeLast()
-                                                    selectedAssetsPlayer2 = Set(selectedArray)
+                                                    selectedAssetsPlayer2 = Array(Set(selectedArray))
                                                     currentPlayer = 2
 
                                                     // Mengatur bidding berdasarkan kondisi yang Anda sebutkan
                                                     if selectedAssetsPlayer1.isEmpty {
                                                         Bidding = 0
                                                     }
-                                                    else if let lastAsset = selectedAssetsPlayer1.subtracting([36, 37, 38, 39]).max() {
+                                                    else if let lastAsset = selectedAssetsPlayer1.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer4.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer4.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer3.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer3.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
                                                     }
                                                     guard let lastAssetPlayer1 = selectedAssetsPlayer1.max() else {
@@ -3888,7 +3888,7 @@ struct BiddingView: View {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
                                                     if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.insert(intValue)
+                                                        selectedAssetsPlayer1.append(intValue)
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -3913,7 +3913,7 @@ struct BiddingView: View {
 
                                                 if let selectedImage4 = selectedImage4, let intValue = Int(selectedImage4) {
                                                     // Assuming selectedImage is a string representation of an integer
-                                                    selectedAssetsPlayer4.insert(intValue)
+                                                    selectedAssetsPlayer4.append(intValue)
                                                 }
                                             }
                                             else
@@ -3941,18 +3941,18 @@ struct BiddingView: View {
                                                 if !selectedAssetsPlayer3.isEmpty {
                                                     var selectedArray = Array(selectedAssetsPlayer3)
                                                     selectedArray.removeLast()
-                                                    selectedAssetsPlayer3 = Set(selectedArray)
+                                                    selectedAssetsPlayer3 = Array(Set(selectedArray))
                                                     currentPlayer = 3
 
                                                     // Mengatur bidding berdasarkan kondisi yang Anda sebutkan
                                                     if selectedAssetsPlayer2.isEmpty {
                                                         Bidding = 0
                                                     }
-                                                    else if let lastAsset = selectedAssetsPlayer2.subtracting([36, 37, 38, 39]).max() {
+                                                    else if let lastAsset = selectedAssetsPlayer2.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer1.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer1.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
-                                                    } else if let lastAsset = selectedAssetsPlayer4.subtracting([36, 37, 38, 39]).max() {
+                                                    } else if let lastAsset = selectedAssetsPlayer4.filter { ![36, 37, 38, 39].contains($0) }.max() {
                                                         Bidding = lastAsset
                                                     }
                                                     guard let lastAssetPlayer2 = selectedAssetsPlayer2.max() else {
@@ -4044,7 +4044,7 @@ struct BiddingView: View {
 
 
     // Helper function to get selected assets for a specific player
-    private func selectedAssets(for player: Int) -> Set<Int> {
+    private func selectedAssets(for player: Int) -> [Int] {
         switch player {
         case 1:
             return selectedAssetsPlayer1
