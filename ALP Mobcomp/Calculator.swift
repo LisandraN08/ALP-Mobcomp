@@ -252,9 +252,9 @@ struct Calculator: View {
                     createCalculationButton(9, posX: 0.61, posY: 0.814)
                     createCalculationButton(0, posX: 0.86, posY: 0.814)
                     
-                    Image("akar-icons_backspace-2")
+                    Image(isLightMode ? "akar-icons_backspace-2" : "akar-icons_backspace-3")
                         .frame(width: 28, height: 33)
-                        .background(isLightMode ? .black.opacity(0) : .white)
+                        .background(.black.opacity(0))
                         .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.51))
                         .onTapGesture {
                             isDoubleSelected = false
@@ -443,10 +443,30 @@ struct Calculator: View {
                                 .weight(.semibold)
                         )
                         .multilineTextAlignment(.trailing)
-                        .foregroundColor(isVulSelected ? Color.red : Color.black)
+                        .foregroundColor(isVulSelected ? Color.red : (isVulSelected == false && isLightMode ? Color.black : (isVulSelected == false && isLightMode == false ? Color.white : Color.black)))
                         .frame(width: 300, height: 70, alignment: .trailing)
                         .position(CGPoint(x: widthLayar * 0.6, y: heightLayar * 0.25))
                 }
+                .background(isLightMode ?
+                            LinearGradient(
+                                stops: [
+                                    Gradient.Stop(color: Color.white, location: 0.00),
+                                    Gradient.Stop(color: Color(red: 0.69, green: 0.85, blue: 0.92), location: 1.00),
+                                ],
+                                startPoint: UnitPoint(x: 0.5, y: 0),
+                                endPoint: UnitPoint(x: 0.5, y: 1)
+                            ) : LinearGradient(
+                                stops: [
+                                    Gradient.Stop(color: Color(red: 0.22, green: 0.22, blue: 0.22), location: 0.00),
+                                    Gradient.Stop(color: Color(red: 0.15, green: 0.15, blue: 0.16), location: 0.23),
+                                    Gradient.Stop(color: Color(red: 0, green: 0.01, blue: 0.03), location: 1.00),
+                                ],
+                                startPoint: UnitPoint(x: 0, y: 0),
+                                endPoint: UnitPoint(x: 1, y: 1)
+                            )
+                            
+                )
+
             }
         }
         
@@ -487,7 +507,7 @@ struct Calculator: View {
                     .shadow(color: .black.opacity(0.05), radius: 7.5, x: 0, y: 3)
                     .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.66))
 
-                Image("akar-icons_backspace")
+                Image(isLightMode ? "akar-icons_backspace-2" : "akar-icons_backspace-3")
                     .frame(width: 28, height: 33)
                     .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.61))
                     .onTapGesture {
@@ -595,7 +615,7 @@ struct Calculator: View {
                 
                 createTabLabels()
                 
-                Image("akar-icons_backspace")
+                Image(isLightMode ? "akar-icons_backspace-2" : "akar-icons_backspace-3")
                     .frame(width: 28, height: 33)
                     .position(CGPoint(x: widthLayar * 0.86, y: heightLayar * 0.61))
                     .onTapGesture {
@@ -747,13 +767,13 @@ struct Calculator: View {
             
             Text("Calculator")
                 .font(
-                    Font.custom("Poppins", size: 20)
+                    Font.custom("Poppins", size: 23)
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(isLightMode ? .black:.white)
+                .foregroundColor(isLightMode ? .black: .white)
                 .frame(width: 150, height: 70, alignment: .center)
-                .position(CGPoint(x: widthLayar * 0.3, y: heightLayar * 0.012))
+                .position(CGPoint(x: widthLayar * 0.2, y: heightLayar * 0.012))
             
             Text("IMP")
                 .font(
@@ -761,7 +781,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(isLightMode ? .black:.white)
+                .foregroundColor(isLightMode ? .black: .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.83, y: heightLayar * 0.012))
                 .onTapGesture{
@@ -777,7 +797,7 @@ struct Calculator: View {
                         .weight(.bold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(isLightMode ? .black:.white)
+                .foregroundColor(isLightMode ? .black: .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.68, y: heightLayar * 0.012))
                 .onTapGesture{
@@ -793,7 +813,7 @@ struct Calculator: View {
                         .weight(.semibold)
                 )
                 .multilineTextAlignment(.center)
-                .foregroundColor(isLightMode ? .black:.white)
+                .foregroundColor(isLightMode ? .black: .white)
                 .frame(width: 150, height: 70, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.93, y: heightLayar * 0.012))
                 .onTapGesture{

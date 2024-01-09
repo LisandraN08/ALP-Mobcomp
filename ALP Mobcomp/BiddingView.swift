@@ -53,6 +53,7 @@ struct BiddingView: View {
     }
 
     var body: some View {
+        
             ZStack {
                 VStack {
                     Rectangle() //utara
@@ -215,6 +216,18 @@ struct BiddingView: View {
                                 Rectangle()
                                     .foregroundColor(.clear)
                                     .frame(width: 0, height: 65)
+                                    .onAppear {
+                                        if Angka % 16 == 1 || Angka % 16 == 8 || Angka % 16 == 11 || Angka % 16 == 14 {
+                                            currentPlayer = 1
+                                        } else if Angka % 16 == 2 || Angka % 16 == 5 || Angka % 16 == 12 || Angka % 16 == 15 {
+                                            currentPlayer = 2
+                                        } else if Angka % 16 == 3 || Angka % 16 == 6 || Angka % 16 == 9 || Angka % 16 == 0 {
+                                            currentPlayer = 3
+                                        } else {
+                                            currentPlayer = 4
+                                        }
+                                    }
+                            
 
 
                             ZStack{
@@ -322,6 +335,7 @@ struct BiddingView: View {
 
                 }
                 if isTextVisible {
+                    
                     if currentPlayer == 1 {
                         Text("Tap to Bid")
                             .font(
