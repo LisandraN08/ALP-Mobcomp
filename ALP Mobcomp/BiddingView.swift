@@ -9,7 +9,9 @@ import SwiftUI
 
 struct BiddingView: View {
 //    @Binding var isLightMode: Bool
-    @State private var isLightMode = false
+    @State private var colorScheme: ColorScheme = .dark
+    @Binding var Angka: Int
+    @Binding var isLightMode: Bool
     @State private var tableNumber: Int = 1
     @State private var dealerPosition: Int = 1
     @State private var selectedAssetsPlayer1: [Int] = []
@@ -43,12 +45,12 @@ struct BiddingView: View {
     @State private var Kontrakfix: String = ""
     @State private var isCalculatorViewActive = false
     @State private var x: CGFloat = 180
-    @State private var Angka: Int = 1
     @State private var isTextVisible = true
 
-//    init(isLightMode: Binding<Bool>) {
-//        _isLightMode = isLightMode
-//    }
+    init(isLightMode: Binding<Bool>, Angka: Binding<Int>) {
+        _isLightMode = isLightMode
+        _Angka = Angka
+    }
 
     var body: some View {
             ZStack {
@@ -4075,7 +4077,7 @@ struct BiddingView: View {
         }
     }
 }
-
-#Preview {
-    BiddingView()
-}
+//
+//#Preview {
+//    BiddingView()
+//}
