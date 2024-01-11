@@ -66,7 +66,8 @@ struct BiddingView: View {
                         .rotationEffect(Angle(degrees: 90))
                         .overlay(
                             ZStack {
-                                ForEach(Array(selectedAssetsPlayer1.enumerated()), id: \.element) { index, asset in
+                                ForEach(selectedAssetsPlayer1.indices, id: \.self) { index in
+                                    let asset = selectedAssetsPlayer1[index]
                                     Image("\(asset)")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
@@ -90,7 +91,8 @@ struct BiddingView: View {
                             .frame(minWidth: 0, maxWidth: .infinity)  // Set the desired width range here
                             .overlay(
                                 ZStack {
-                                    ForEach(Array(selectedAssetsPlayer4.sorted().enumerated()), id: \.element) { index, asset in
+                                    ForEach(selectedAssetsPlayer4.indices, id: \.self) { index in
+                                        let asset = selectedAssetsPlayer4[index]
                                         Image("\(asset)")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
@@ -147,6 +149,8 @@ struct BiddingView: View {
                                         Pass = 0
                                         Opening = 0
                                         Opener = 0
+                                        Kontrak = ""
+                                        Kontrakfix = ""
                                         isTextVisible = true
                                         if Angka == 1
                                         {
@@ -275,6 +279,8 @@ struct BiddingView: View {
                                         Bidding = 0
                                         Pass = 0
                                         Opening = 0
+                                        Kontrak = ""
+                                        Kontrakfix = ""
                                         Opener = 0
                                         Angka = Angka + 1
                                         isTextVisible = true
@@ -298,7 +304,8 @@ struct BiddingView: View {
                             .frame(minWidth: 0, maxWidth: .infinity)  // Set the desired width range here
                             .overlay(
                                 ZStack {
-                                    ForEach(Array(selectedAssetsPlayer2.sorted().enumerated()), id: \.element) { index, asset in
+                                    ForEach(selectedAssetsPlayer2.indices, id: \.self) { index in
+                                        let asset = selectedAssetsPlayer2[index]
                                         Image("\(asset)")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
@@ -321,7 +328,8 @@ struct BiddingView: View {
                         .rotationEffect(Angle(degrees: 90))
                         .overlay(
                             ZStack {
-                                ForEach(Array(selectedAssetsPlayer3.sorted().enumerated()), id: \.element) { index, asset in
+                                ForEach(selectedAssetsPlayer3.indices, id: \.self) { index in
+                                    let asset = selectedAssetsPlayer3[index]
                                     Image("\(asset)")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
@@ -1123,8 +1131,16 @@ struct BiddingView: View {
                                                 {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
-                                                    if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.append(intValue)
+                                                    
+                                                    if Kontrakfix.isEmpty {
+                                                        Kontrakfix = "All Pass"
+                                                    } else {
+                                                        // Modify Kontrakfix based on conditions
+                                                        if Kontrakfix.contains("rdbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dblrdbl", with: "XX")
+                                                        } else if Kontrakfix.contains("dbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dbl", with: "X")
+                                                        }
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -2038,8 +2054,16 @@ struct BiddingView: View {
                                                 {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
-                                                    if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.append(intValue)
+                                                    
+                                                    if Kontrakfix.isEmpty {
+                                                        Kontrakfix = "All Pass"
+                                                    } else {
+                                                        // Modify Kontrakfix based on conditions
+                                                        if Kontrakfix.contains("rdbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dblrdbl", with: "XX")
+                                                        } else if Kontrakfix.contains("dbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dbl", with: "X")
+                                                        }
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -2989,8 +3013,16 @@ struct BiddingView: View {
                                                 {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
-                                                    if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.append(intValue)
+                                                    
+                                                    if Kontrakfix.isEmpty {
+                                                        Kontrakfix = "All Pass"
+                                                    } else {
+                                                        // Modify Kontrakfix based on conditions
+                                                        if Kontrakfix.contains("rdbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dblrdbl", with: "XX")
+                                                        } else if Kontrakfix.contains("dbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dbl", with: "X")
+                                                        }
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
@@ -3903,8 +3935,16 @@ struct BiddingView: View {
                                                 {
                                                     isTextVisible = false
                                                     isAssetSelectionVisible = false
-                                                    if let selectedImage = selectedImage, let intValue = Int(selectedImage) {
-                                                        selectedAssetsPlayer1.append(intValue)
+
+                                                    if Kontrakfix.isEmpty {
+                                                        Kontrakfix = "All Pass"
+                                                    } else {
+                                                        // Modify Kontrakfix based on conditions
+                                                        if Kontrakfix.contains("rdbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dblrdbl", with: "XX")
+                                                        } else if Kontrakfix.contains("dbl") {
+                                                            Kontrakfix = Kontrakfix.replacingOccurrences(of: "dbl", with: "X")
+                                                        }
                                                     }
 
                                                     // Menampilkan alert dengan informasi yang telah disiapkan
