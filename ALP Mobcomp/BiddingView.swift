@@ -1253,14 +1253,13 @@ struct BiddingView: View {
                                             }
 
                                     }
-
                                     .opacity(isAssetSelectionVisible ? 1 : 0)
                                     .animation(.easeInOut)
                                     .onTapGesture {
                                         isAssetSelectionVisible.toggle()
                                         showAlert.toggle()
-
                                     }
+                                    
                                     Spacer()
                                 }
                             )

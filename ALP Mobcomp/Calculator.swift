@@ -772,7 +772,7 @@ struct Calculator: View {
                 )
                 .multilineTextAlignment(.center)
                 .foregroundColor(isLightMode ? .black: .white)
-                .frame(width: 150, height: 70, alignment: .center)
+                .frame(width: 150, height: 100, alignment: .center)
                 .position(CGPoint(x: widthLayar * 0.2, y: heightLayar * 0.012))
             
             Text("IMP")
